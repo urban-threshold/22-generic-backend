@@ -1,10 +1,12 @@
 import { Router } from 'itty-router'
 import example from './routes/example'
+import getFerry from './routes/transport'
 
 
 const router = Router()
 
 router
+  .get("/ferries", getFerry)
   .get("/example", example)
   .options('/example', () => new Response("", {status: 204, headers: {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET", "Access-Control-Allow-Headers": "*"}}))
   .all('*', () => new Response('Not Found.', { status: 404 }))
