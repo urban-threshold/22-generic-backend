@@ -1,6 +1,6 @@
 import gatherResponse from '../misc';
 
-const allowLocalDevApp = "http://localhost:3000"
+const allowLocalDevApp = "*"
 const allowCloudDevApp = ""
 
 async function getFerry(request: Request): Promise<Response> {
