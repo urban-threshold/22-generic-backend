@@ -40,12 +40,12 @@ async function getBooking(request: any): Promise<Response> {
     const value = await BOOKINGS_KV.get(params.ferryKey);
     result = '{"counter":' + value + '}';
   } else {
-    result = "record was not found";
+    result = '{"counter": 0}';
   }
 
   return new Response(result, {
     status: 200,
-    headers: { 'Access-Control-Allow-Origin': allowLocalDevApp }
+    headers: { 'Access-Control-Allow-Origin': allowLocalDevApp, 'Content-Type': 'application/json'}
   })
 }
 
