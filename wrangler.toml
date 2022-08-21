@@ -1,3 +1,6 @@
 name = "generic-backend"
 main = "src/index.ts"
 compatibility_date = "2022-08-19"
+kv_namespaces = [
+    { binding = "BOOKINGS_KV", id = "e61993778df349eeb849022f05c14549", preview_id = "9b0da78a4469438b874012155eaafbca" } 
+]

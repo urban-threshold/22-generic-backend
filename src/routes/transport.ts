@@ -31,5 +31,29 @@ async function getBusStops(request: Request): Promise<Response> {
     })
 }
 
+async function getBooking(request: any): Promise<Response> {
 
-export {getFerry, getBusStops}
+}
+
+async function storeBooking(request: any): Promise<Response> {
+  const { params } = request;
+
+  let recordFound = await BOOKINGS_KV.get(String(params.key));
+  if(recordFound){
+    const value = await BOOKINGS_KV.get(String(params.key));
+    let newValue = Number(value) + 1;
+    await BOOKINGS_KV.put(String(params.key),String(newValue));
+  } else {
+    //init the key value to 0
+    await BOOKINGS_KV.put(String(params.key), "0")
+    storeBooking;
+  }
+
+  let result = '{"count":' + (await BOOKINGS_KV.get(String(params.key))) + '}';
+  return new Response(result, {
+    status: 200,
+    headers: { 'Access-Control-Allow-Origin': allowLocalDevApp }
+  })
+}
+
+export {getFerry, getBusStops, storeBooking}
