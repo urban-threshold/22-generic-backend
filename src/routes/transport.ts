@@ -17,7 +17,7 @@ async function getFerry(request: Request): Promise<Response> {
     })
 }
 
-async function getBusStops(request: Request): Promise<Response> {
+async function getBusStops(request: any): Promise<Response> {
     const init = {
         headers: {
           'content-type': 'application/json;charset=UTF-8',
@@ -32,28 +32,48 @@ async function getBusStops(request: Request): Promise<Response> {
 }
 
 async function getBooking(request: any): Promise<Response> {
-
-}
-
-async function storeBooking(request: any): Promise<Response> {
   const { params } = request;
+  let recordFound = await BOOKINGS_KV.get(params.ferryKey);
+  let result = "";
 
-  let recordFound = await BOOKINGS_KV.get(String(params.key));
+  console.log(params.ferryKey);
+
   if(recordFound){
-    const value = await BOOKINGS_KV.get(String(params.key));
-    let newValue = Number(value) + 1;
-    await BOOKINGS_KV.put(String(params.key),String(newValue));
+    const value = await BOOKINGS_KV.get(params.ferryKey);
+    result = '{"counter":' + value + '}';
   } else {
     //init the key value to 0
-    await BOOKINGS_KV.put(String(params.key), "0")
-    storeBooking;
+    result = "record was not found";
   }
 
-  let result = '{"count":' + (await BOOKINGS_KV.get(String(params.key))) + '}';
   return new Response(result, {
     status: 200,
     headers: { 'Access-Control-Allow-Origin': allowLocalDevApp }
   })
 }
 
-export {getFerry, getBusStops, storeBooking}
+async function storeBooking(request: any): Promise<Response> {
+  const { params } = request;
+
+  let result = "";
+  console.log(params.ferryKey);
+  let recordFound = await BOOKINGS_KV.get(params.ferryKey);
+  if(recordFound){
+    const value = await BOOKINGS_KV.get(params.ferryKey);
+    let newValue = Number(value) + 1;
+    await BOOKINGS_KV.put(params.ferryKey,String(newValue));
+    result = "record updated";
+  } else {
+    //init the key value to 0
+    await BOOKINGS_KV.put(params.ferryKey, "1")
+    storeBooking;
+    result = "record added";
+  }
+
+  return new Response(result, {
+    status: 200,
+    headers: { 'Access-Control-Allow-Origin': allowLocalDevApp }
+  })
+}
+
+export {getFerry, getBusStops, storeBooking, getBooking}

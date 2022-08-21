@@ -1,12 +1,13 @@
 import { Router } from 'itty-router'
 import example from './routes/example'
-import { getFerry, getBusStops, storeBooking } from './routes/transport'
+import { getFerry, getBusStops, storeBooking, getBooking } from './routes/transport'
 
 
 const router = Router()
 
 router
   .post("/addbooking/:ferryKey", storeBooking)
+  .get("/booking/:ferryKey", getBooking)
   .get("/busstops", getBusStops)
   .get("/ferries", getFerry)
   .get("/example", example)
