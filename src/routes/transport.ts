@@ -42,7 +42,6 @@ async function getBooking(request: any): Promise<Response> {
     const value = await BOOKINGS_KV.get(params.ferryKey);
     result = '{"counter":' + value + '}';
   } else {
-    //init the key value to 0
     result = "record was not found";
   }
 
